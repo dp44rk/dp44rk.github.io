@@ -1,16 +1,16 @@
 # Site settings
-title: 기계인간 John Grib
-url: "https://johngrib.github.io"
+title: dpark's wiki
+url: "https://dp44rk.github.io/"
 baseurl: ""
 description: >
-    기계인간 블로그
+    dpark's public Archive
 
 # My information
-email: johngrib82@gmail.com
-author: 기계인간 John Grib
+email: dp4rk02@gmail.com
+author: dpark
 profile: 유물론자
-twitter_username: John_Grib
-github_username: johngrib
+twitter_username: sample-value
+github_username: dp44rk
 comment-support: utterances
 
 # Build settings
@@ -38,21 +38,21 @@ collections:
 
 # Comment Service
 giscus:
-  repo: johngrib/johngrib.github.io
-  repo_id: SAMPLE-VALUE
+  repo: dp44rk/dp44rk.github.io
+  repo_id: R_kgDOOAeUhQ
   category: Announcements
-  category_id: SAMPLE-VALUE
+  category_id: DIC_kwDOOAeUhc4CnZXW
 
 google_analytics:
-  ua: SAMPLE-VALUE
-  encrypted_ua: THIS-IS-SAMPLE-VALUE
+  ua: G-HDC27S52KD
+  encrypted_ua: U2FsdGVkX19xJBnOu2mMLJ06PgI5MupZDm+8ZlOl7fQ=
 
 google_adsense:
   client: SAMPLE-VALUE
 
-blame: "https://github.com/johngrib/johngrib.github.io/blame/master/_wiki"
-edit: "https://github.com/johngrib/johngrib.github.io/edit/master/_wiki"
-issue: "https://github.com/johngrib/johngrib.github.io/issues/new"
+blame: "https://github.com/dp44rk/dp44rk.github.io/blame/master/_wiki"
+edit: "https://github.com/dp44rk/dp44rk.github.io/edit/master/_wiki"
+issue: "https://github.com/dp44rk/dp44rk.github.ioo/issues/new"
 
 timezone: "Asia/Seoul"
 
