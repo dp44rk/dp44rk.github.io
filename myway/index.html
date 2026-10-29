@@ -73,6 +73,15 @@
   .faq-item p { padding: 20px 24px 24px; color: var(--muted); font-size: 17px; overflow: hidden; }
   .faq-item summary:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
 
+  .member { flex-direction: row; align-items: center; gap: 20px; padding: 28px var(--pad); }
+  .member h3 { font-size: 28px; }
+  .member p { font-size: 15px; margin-top: 2px; }
+  .member > div { display: flex; flex-direction: column; }
+  .member .shape { width: 64px; height: 64px; flex: none; display: block; }
+  .member .shape.c { border-radius: 50%; background: var(--red); }
+  .member .shape.s { background: var(--blue); }
+  .member .shape.t { background: var(--yellow); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+
   @media (max-width: 900px) {
     .hero-text, .hero-art, .convert-art, .convert-text { grid-column: 1 / -1; }
     .hero-art { margin-top: 24px; }
@@ -90,7 +99,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="./"><span class="marks"><i class="c"></i><i class="s"></i><i class="t"></i></span>내 방식 QR</a>
-    <nav aria-label="페이지 안 이동"><a href="#problem">왜 필요한가</a><a href="#how">어떻게 쓰나</a><a href="#convert">AI 화면 변환</a><a href="#plain">쉬운 말</a><a href="#result">성과</a><a href="#faq">자주 묻는 질문</a></nav>
+    <nav aria-label="페이지 안 이동"><a href="#problem">왜 필요한가</a><a href="#how">어떻게 쓰나</a><a href="#convert">AI 화면 변환</a><a href="#plain">쉬운 말</a><a href="#result">성과</a><a href="#faq">자주 묻는 질문</a><a href="#team">팀</a></nav>
     <a class="btn y sm" href="demo.html">직접 해보기</a>
   </div>
 </header>
@@ -196,6 +205,15 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
     </div>
   </section>
 
+  <section id="team">
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow y">만든 사람들</p><h2>팀 Camelon</h2><p class="lead">내 방식 QR을 기획하고 만든 팀이에요.</p></div>
+      <div class="card member span4" data-a><i class="shape c" aria-hidden="true"></i><div><h3>박도연</h3><p>Team Camelon</p></div></div>
+      <div class="card member span4" data-a><i class="shape s" aria-hidden="true"></i><div><h3>여지원</h3><p>Team Camelon</p></div></div>
+      <div class="card member span4" data-a><i class="shape t" aria-hidden="true"></i><div><h3>윤진영</h3><p>Team Camelon</p></div></div>
+    </div>
+  </section>
+
   <section id="faq">
     <div class="wrap grid">
       <div class="sec-head" data-a><p class="eyebrow b">자주 묻는 질문</p><h2>궁금한 점을 모았어요.</h2></div>
@@ -225,7 +243,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
 
 <footer>
   <div class="wrap">
-    <span><span class="marks"><i class="c"></i><i class="s"></i><i class="t"></i></span> 내 방식 QR · 2026 AI 라이프 솔루션 챌린지 출품작 (원안: AI 라이프 아이디어 챌린지 5번 「내 방식 QR: 범용 접근성 프로필 패스」)</span>
+    <span><span class="marks"><i class="c"></i><i class="s"></i><i class="t"></i></span> 내 방식 QR · 팀 Camelon (박도연 · 여지원 · 윤진영) · 2026 AI 라이프 솔루션 챌린지 출품작 (원안: AI 라이프 아이디어 챌린지 5번 「내 방식 QR: 범용 접근성 프로필 패스」)</span>
     <span>매장·메뉴·가격은 모두 가상이며 결제는 목업입니다. · 글꼴 SUIT (OFL)</span>
   </div>
 </footer>
