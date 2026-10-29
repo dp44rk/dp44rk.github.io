@@ -36,6 +36,7 @@ export function normalizeScreen(raw) {
       p: Number.isFinite(+e.p) && e.p !== null ? +e.p : null,
       c: e.c || null,
       sel: !!e.sel,
+      g: e.g ? String(e.g).slice(0, 30) : undefined,
     });
   }
   if (s.pick !== null && !s.els.some((e) => e.id === Number(s.pick))) s.pick = null;

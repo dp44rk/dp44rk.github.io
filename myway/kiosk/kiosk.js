@@ -1,6 +1,7 @@
 // 목업 키오스크 엔진 — 실제 매장 키오스크의 흐름을 흉내 낸다.
 // 연동 모드: 화면 구조를 서버에 올리고(폰이 읽음), 폰이 보낸 "내 방식" 프로필로 화면을 바꾼다.
 import { STORES, PLAIN } from './stores.js';
+import { ruleConvert, validate } from '../lib/convert.js';
 
 const READ = { 'Eat in': '이트 인', 'Take out': '테이크 아웃', HOT: '핫', ICE: '아이스', Regular: '레귤러', Large: '라지', COFFEE: '커피', 'NON-COFFEE': '논 커피', TEA: '티', DESSERT: '디저트', NEW: '뉴' };
 const W = 1080, H = 1920;
@@ -167,7 +168,8 @@ function render() {
   root.innerHTML = html;
   applyMyway();
   drawQr();
-  requestAnimationFrame(() => requestAnimationFrame(publish));
+  if (st.myway?.convert && !['paying'].includes(st.screen)) requestAnimationFrame(convertScreen);
+  else requestAnimationFrame(() => requestAnimationFrame(publish));
 }
 
 function applyMyway() {
@@ -179,6 +181,8 @@ function applyMyway() {
 
 // ---------- 동작 ----------
 root.addEventListener('click', (e) => {
+  const ref = e.target.closest('[data-ref]');
+  if (ref) { const o = origRefs[Number(ref.dataset.ref) - 1]; if (o && !o.disabled) o.click(); return; }
   const b = e.target.closest('[data-act]');
   if (!b || b.disabled) return;
   st.idle = 120;
@@ -265,24 +269,33 @@ function screenType() {
   return { start: 'start', dine: 'dine', menu: 'menu', cart: 'cart', point: 'point', pay_method: 'pay_method', pay_card: 'pay_card', paying: 'pay_card', done: 'done' }[st.screen];
 }
 let pubTimer = null, lastPub = '';
-function publish() {
+// 화면 구조 모으기: 보이는 [data-k] 버튼 → id·글자·종류·상자(0~1000)·묶음 제목
+function collect(scope, { keepRefs = false } = {}) {
   const r = root.getBoundingClientRect();
-  const scope = st.modal ? root.querySelector('.modal') : root;
-  const els = [];
+  const els = [], refs = [];
   let id = 1;
   for (const el of scope.querySelectorAll('[data-k]')) {
-    if (el.disabled) continue;
+    if (el.disabled || el.closest('.mw') && !scope.classList.contains('mw')) continue;
     const b = el.getBoundingClientRect();
     if (b.width < 2 || b.height < 2 || b.bottom < r.top || b.top > r.bottom) continue;
     const cs = getComputedStyle(el);
+    const g = el.closest('.og')?.querySelector('h4')?.childNodes[0]?.textContent?.trim();
     els.push({
       id: id++, t: el.dataset.t, r: el.dataset.r || el.dataset.t, k: el.dataset.k,
       b: [b.left, b.top, b.right, b.bottom].map((v, i) => Math.round(((v - (i % 2 ? r.top : r.left)) / (i % 2 ? r.height : r.width)) * 1000)),
-      p: el.dataset.p ? Number(el.dataset.p) : null, c: cs.backgroundColor, sel: el.dataset.sel === '1',
+      p: el.dataset.p ? Number(el.dataset.p) : null, c: cs.backgroundColor, sel: el.dataset.sel === '1', ...(g ? { g } : {}),
     });
+    refs.push(el);
   }
   const title = (scope.querySelector('h2,h1')?.textContent || '').trim();
-  const screen = { kiosk: true, quality: 'ok', screen: [0, 0, 1000, 1000], type: screenType(), title, els, total: total() || null, no: st.orderNo, pick: null, conf: 1, bg: getComputedStyle(root).backgroundColor, say: '' };
+  return { screen: { kiosk: true, quality: 'ok', screen: [0, 0, 1000, 1000], type: screenType(), title, els, total: total() || null, no: st.orderNo, pick: null, conf: 1, bg: getComputedStyle(root).backgroundColor, say: '' }, refs };
+}
+
+function publish() {
+  const mw = root.querySelector('.mw');
+  const scope = mw || (st.modal ? root.querySelector('.modal') : root);
+  const { screen } = collect(scope);
+  if (mw) screen.converted = mw.dataset.source;
   window.__kioskState = screen;
   const key = JSON.stringify(screen);
   if (key === lastPub) return;
@@ -292,6 +305,52 @@ function publish() {
     if (chan) { chan.postMessage({ type: 'state', id: KIOSK_ID, screen, version: ++localVersion }); return; }
     fetch(`${API}/api/kiosk/${KIOSK_ID}/state`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ screen }) }).catch(() => {});
   }, 120);
+}
+
+// ---------- AI 화면 변환 (내 방식 모드) ----------
+// 원래 화면은 그대로 두고 그 위에 "내 방식 화면"을 덮는다. 버튼을 누르면 원래 버튼을 누른 것과 같다 → 기존 흐름 유지.
+const convCache = new Map(); // 같은 화면 = 같은 변환 (케이스별 저장)
+let origRefs = [], convGen = 0;
+function sigOf(sc) { return sc.type + '|' + sc.els.map((e) => e.t + (e.sel ? '*' : '') + e.k).join(','); }
+
+function convertScreen() {
+  const scope = st.modal ? root.querySelector('.modal') : root;
+  const { screen, refs } = collect(scope);
+  origRefs = refs;
+  const norm = { ...screen, els: screen.els.map((e) => ({ ...e, box: e.b })) };
+  const sig = sigOf(norm) + '|' + (st.myway?.experience || '');
+  const cached = convCache.get(sig);
+  const plan = cached?.plan || validate(ruleConvert(norm), norm).plan;
+  drawOverlay(plan, norm, cached ? cached.source : 'rule');
+  if (!cached && !chan && st.myway?.ai !== false) {
+    const gen = ++convGen;
+    fetch(`${API}/api/convert`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ screen: norm, profile: st.myway?.profile || {} }) })
+      .then((r) => r.json())
+      .then((j) => {
+        if (!j?.plan) return;
+        convCache.set(sig, { plan: j.plan, source: j.source });
+        if (gen === convGen && st.myway) drawOverlay(j.plan, norm, j.source);
+      }).catch(() => {});
+  } else if (!cached) convCache.set(sig, { plan, source: 'rule' });
+}
+
+function drawOverlay(plan, sc, source) {
+  root.querySelector('.mw')?.remove();
+  const byId = new Map(sc.els.map((e) => [e.id, e]));
+  const cls = (e) => (['yes', 'next', 'pay'].includes(e.k) && !/^[◀▶]$/.test(e.t) ? 'pri' : ['no', 'skip', 'close', 'cancel'].includes(e.k) ? 'dec' : ['back', 'staff'].includes(e.k) ? 'min' : '');
+  const mw = document.createElement('div');
+  mw.className = 'mw'; mw.dataset.source = source;
+  const t = total();
+  const info = { cart: t && `모두 ${won(t)}`, point: '', pay_method: t && `모두 ${won(t)}`, pay_card: `모두 ${won(t)} · 화면 아래 구멍에 카드를 꽂으세요`, done: st.orderNo && `주문 번호 ${st.orderNo}번` }[sc.type];
+  const lines = sc.type === 'cart' ? `<ul class="mw-l">${st.cart.map((c) => `<li>${esc(c.name)} ${c.qty}개 <b>${won(c.price * c.qty)}</b></li>`).join('')}</ul>` : '';
+  mw.innerHTML = `<h2 class="mw-t">${esc(plan.title || '')}</h2>${info ? `<p class="mw-i">${esc(info)}</p>` : ''}${lines}` + plan.sections.map((s) => `
+    <section class="mw-s ${s.role || ''}">${s.title ? `<h3>${esc(s.title)}</h3>` : ''}<div class="mw-g n${Math.min(s.ids.length, 3)}">
+    ${s.ids.map((id) => { const e = byId.get(id); if (!e) return ''; const label = plan.labels[id] || e.t; const hint = plan.hints?.[id];
+      return `<button class="mw-b ${cls(e)}${e.sel ? ' sel' : ''}" data-k="${e.k}" data-t="${esc(label)}" data-r="${esc(label)}" data-ref="${id}" ${e.sel ? 'data-sel="1"' : ''} ${e.p ? `data-p="${e.p}"` : ''}>
+        <b>${esc(label)}</b>${label !== e.t ? `<small>${esc(e.t)}</small>` : ''}${hint ? `<em>${esc(hint)}</em>` : ''}</button>`; }).join('')}
+    </div></section>`).join('') + (sc.type === 'pay_card' ? '<button class="demo" data-act="insert" data-demo="1">[시연] 카드 꽂기</button>' : '') + `<p class="mw-src">${source === 'rule' ? '규칙 변환' : 'AI 화면 변환'} · 버튼을 누르면 원래 화면에서 눌린 것과 같아요</p>`;
+  root.appendChild(mw);
+  requestAnimationFrame(() => requestAnimationFrame(publish));
 }
 
 // ---------- 프로필 받기 (롱폴링) ----------
@@ -311,10 +370,13 @@ function kioskPrefs(p) {
   return {
     fontScale: low ? 1.7 : first ? 1.35 : 1.15,
     contrast: low || !!p.contrast,
-    plain: p.plain !== false,
+    plain: false,        // 라벨은 AI 화면 변환이 바꾼다 (원래 화면은 원문 유지)
     noTimer: true,
     simple: low || first,
     noUpsell: !!p.noUpsell,
+    convert: true,       // AI 화면 변환 켜기
+    experience: p.experience,
+    profile: { experience: p.experience, vision: p.vision },
   };
 }
 
