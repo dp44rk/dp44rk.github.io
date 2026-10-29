@@ -40,15 +40,14 @@
     <h2>내 방식 QR</h2>
     <ul class="tags" id="qr-tags"></ul>
     <div class="qrbox"><canvas id="qr-c" width="560" height="560"></canvas></div>
-    <p class="sub">가족 폰으로 이 QR을 찍으면 같은 설정이 들어가요.<br>이름·전화번호 같은 개인정보는 담지 않아요.</p>
-    <button class="blk w" id="qr-copy">주소 복사하기</button>
-    <button class="blk y" data-go="home">돌아가기</button>
+    <p class="sub">가족 폰으로 찍으면 같은 설정이 들어가요. 개인정보는 담지 않아요.</p>
+    <div class="row2"><button class="blk w" id="qr-copy">주소 복사</button><button class="blk y" data-go="home">돌아가기</button></div>
   </section>
 
   <!-- 하고 싶은 것 말하기 -->
   <section class="view" id="v-goal" data-view="goal">
     <h2>무엇을 주문하실 거예요?</h2>
-    <p class="sub">"차가운 아메리카노 하나, 가져갈 거야"처럼 말해 주세요.</p>
+    <p class="sub">예: "차가운 아메리카노 하나, 가져갈게"</p>
     <button class="mic" id="goal-mic" aria-label="말하기"><span></span>누르고 말하기</button>
     <p class="heard" id="goal-heard"></p>
     <div class="type-row"><input id="goal-text" placeholder="글로 써도 돼요" autocomplete="off"><button class="blk b sm" id="goal-send">확인</button></div>
@@ -68,8 +67,8 @@
       <video id="video" playsinline muted autoplay></video>
       <canvas id="shot"></canvas>
       <div class="hl" id="hl"></div>
-      <div class="linked" id="linked" hidden></div>
     </div>
+    <div class="linked" id="linked" hidden></div>
     <div class="instr" id="instr">
       <div class="big" id="instr-big">키오스크 화면을 비추고<br>아래 노란 버튼을 누르세요</div>
       <div class="small" id="instr-sub"></div>

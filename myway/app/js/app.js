@@ -23,6 +23,7 @@ const app = {
   demo: null,          // 체험 모드 제공자 (demo.js)
 };
 window.__app = app;
+window.__go = (n) => go(n); // 시험용
 
 // ---------- 화면 전환 ----------
 function go(name) {
@@ -114,7 +115,7 @@ function enterQr() {
 }
 
 // ---------- 목표 ----------
-const CHIPS = ['차가운 아메리카노 한 잔 가져갈게', '따뜻한 카페라떼 한 잔 먹고 갈게', '김치찌개 하나 먹고 갈게', '돌솥비빔밥 하나 포장'];
+const CHIPS = ['차가운 아메리카노 하나 포장', '따뜻한 카페라떼 하나 먹고 갈게', '김치찌개 하나 먹고 갈게', '비빔밥 하나 포장'];
 function enterGoal() {
   $('#goal-heard').textContent = '';
   $('#goal-chips').innerHTML = CHIPS.map((c) => `<button>${c}</button>`).join('');
