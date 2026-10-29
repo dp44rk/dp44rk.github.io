@@ -68,3 +68,11 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: 
   section { padding-top: 88px; }
   :root { --gut: 16px; --pad: 16px; }
 }
+
+/* 움직임 시작 상태 (motion.js가 풀어 줌). 움직임 줄이기 설정·자바스크립트 실패 시에는 적용되지 않음 */
+.motion [data-a] { opacity: 0; }
+.motion .hero h1 .ln > span { transform: translateY(105%); }
+.motion .hero h1 em { background-size: 0% 100%; }
+.motion .nav .marks i { opacity: 0; }
+.motion .hero-art, .motion .convert-art, .motion .cta-block { --o: 0px; }
+@media (prefers-reduced-motion: reduce) { .motion [data-a], .motion .nav .marks i { opacity: 1 !important; } }

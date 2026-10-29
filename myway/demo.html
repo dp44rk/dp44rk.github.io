@@ -8,6 +8,8 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="vendor/suit/suit.css">
 <link rel="stylesheet" href="site.css">
+<script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('motion'); setTimeout(function () { if (!window.__motionReady) document.documentElement.classList.remove('motion'); }, 3000); }</script>
+<script type="module" src="motion.js"></script>
 <style>
   /* 두 기기 높이를 같게(--h) 두고, 키오스크 9:16 · 폰 390:844 비율로 너비를 정한다 → 위·아래 선이 정확히 맞는다 */
   :root { --h: min(78vh, 860px); }
@@ -53,15 +55,15 @@
 
 <main class="wrap">
   <div class="top">
-    <p class="eyebrow">시연 · 서버 없이 브라우저 안에서</p>
-    <h1>폰이 말한 대로, 키오스크를 눌러 보세요.</h1>
-    <ol class="steps">
-      <li><b>내 방식 정하기</b>오른쪽 폰에서 질문 5개에 답해요. (처음 1번)</li>
-      <li><b>주문 말하기</b>예시 버튼 「차가운 아메리카노 한 잔 가져갈게」를 눌러요.</li>
-      <li><b>안내대로 누르기</b>폰에 나온 버튼을 왼쪽 키오스크에서 눌러요.</li>
-      <li><b>화면이 바뀌어요</b>연동되면 키오스크가 내 방식 화면으로 바뀌어요.</li>
+    <p class="eyebrow" data-a>시연 · 서버 없이 브라우저 안에서</p>
+    <h1 data-a>폰이 말한 대로, 키오스크를 눌러 보세요.</h1>
+    <ol class="steps" data-x>
+      <li data-a><b>내 방식 정하기</b>오른쪽 폰에서 질문 5개에 답해요. (처음 1번)</li>
+      <li data-a><b>주문 말하기</b>예시 버튼 「차가운 아메리카노 한 잔 가져갈게」를 눌러요.</li>
+      <li data-a><b>안내대로 누르기</b>폰에 나온 버튼을 왼쪽 키오스크에서 눌러요.</li>
+      <li data-a><b>화면이 바뀌어요</b>연동되면 키오스크가 내 방식 화면으로 바뀌어요.</li>
     </ol>
-    <div class="bar" role="group" aria-label="시연 조절">
+    <div class="bar" data-a role="group" aria-label="시연 조절">
       <span class="lbl">매장</span>
       <button data-store="cafe" class="on">카페</button>
       <button data-store="restaurant">식당</button>
@@ -72,8 +74,8 @@
   </div>
 
   <div class="stage">
-    <div class="dev k"><span class="cap">목업 키오스크 (가상 매장)</span><div class="kiosk"><iframe id="kf" title="목업 키오스크" allow="autoplay"></iframe></div></div>
-    <div class="dev p"><span class="cap">어르신의 폰</span><div class="phone"><iframe id="pf" title="내 방식 QR 폰 앱" allow="autoplay; microphone; camera"></iframe></div></div>
+    <div class="dev k" data-a><span class="cap">목업 키오스크 (가상 매장)</span><div class="kiosk"><iframe id="kf" title="목업 키오스크" allow="autoplay"></iframe></div></div>
+    <div class="dev p" data-a><span class="cap">어르신의 폰</span><div class="phone"><iframe id="pf" title="내 방식 QR 폰 앱" allow="autoplay; microphone; camera"></iframe></div></div>
   </div>
   <p class="hint">시연에서는 키오스크가 규칙 변환으로 바뀌어요. AI 화면 변환·카메라 모드는 AI 서버를 켜면 동작해요. 매장·메뉴·가격은 가상이고 결제는 목업이에요.</p>
 </main>

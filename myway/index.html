@@ -16,9 +16,11 @@
   .hero { padding: 72px 0 0; }
   .hero .grid { align-items: center; }
   .hero-text { grid-column: 1 / span 6; }
-  .hero-art { grid-column: 7 / span 6; border: var(--line) solid var(--ink); box-shadow: 12px 12px 0 var(--ink); background: var(--yellow); }
+  .hero-art { grid-column: 7 / span 6; border: var(--line) solid var(--ink); box-shadow: var(--o, 12px) var(--o, 12px) 0 var(--ink); background: var(--yellow); }
   .hero h1 { font-size: var(--h1); line-height: 1.08; font-weight: 900; letter-spacing: -.02em; }
-  .hero h1 em { font-style: normal; background: var(--yellow); padding: 0 8px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  .hero h1 .ln { display: block; overflow: hidden; padding-bottom: .06em; }
+  .hero h1 .ln > span { display: inline-block; }
+  .hero h1 em { font-style: normal; background: linear-gradient(var(--yellow), var(--yellow)) no-repeat 0 0 / 100% 100%; padding: 0 8px; }
   .hero .lead { margin-top: 32px; }
   .hero .cta { display: flex; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
   .say { grid-column: 1 / -1; margin-top: 72px; border: var(--line) solid var(--ink); background: var(--white); display: grid; grid-template-columns: 96px 1fr; }
@@ -45,7 +47,7 @@
   .mode.b li::before { background: #fff; }
 
   /* 화면 변환 */
-  .convert-art { grid-column: 1 / span 7; border: var(--line) solid var(--ink); box-shadow: 12px 12px 0 var(--blue); background: var(--blue); }
+  .convert-art { grid-column: 1 / span 7; border: var(--line) solid var(--ink); box-shadow: var(--o, 12px) var(--o, 12px) 0 var(--blue); background: var(--blue); }
   .convert-text { grid-column: 8 / span 5; display: flex; flex-direction: column; gap: 24px; align-self: center; }
   .convert-text .item { border-left: 8px solid var(--ink); padding: 4px 0 4px 16px; }
   .convert-text .item b { display: block; font-size: 19px; }
@@ -57,7 +59,7 @@
   .card .num.sm { font-size: 44px; white-space: nowrap; }
   .note { grid-column: 1 / -1; font-size: 15px; color: var(--muted); margin-top: 16px; }
 
-  .cta-block { grid-column: 1 / -1; background: var(--yellow); border: var(--line) solid var(--ink); box-shadow: 12px 12px 0 var(--ink); padding: 56px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+  .cta-block { grid-column: 1 / -1; background: var(--yellow); border: var(--line) solid var(--ink); box-shadow: var(--o, 12px) var(--o, 12px) 0 var(--ink); padding: 56px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
   .cta-block h2 { font-size: clamp(28px, 3vw, 40px); }
   .cta-block .btns { display: flex; gap: 16px; flex-wrap: wrap; }
 
@@ -65,10 +67,10 @@
   .faq-item { background: var(--white); border: var(--line) solid var(--ink); }
   .faq-item summary { list-style: none; cursor: pointer; padding: 20px 64px 20px 24px; font-size: 20px; font-weight: 800; position: relative; line-height: 1.4; }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary::after { content: '+'; position: absolute; right: 20px; top: 50%; width: 32px; height: 32px; margin-top: -16px; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--ink); font-size: 22px; font-weight: 900; line-height: 1; }
+  .faq-item summary::after { content: '+'; transform: rotate(var(--r, 0deg)); position: absolute; right: 20px; top: 50%; width: 32px; height: 32px; margin-top: -16px; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--ink); font-size: 22px; font-weight: 900; line-height: 1; }
   .faq-item[open] summary::after { content: '−'; background: var(--blue); color: #fff; }
   .faq-item[open] summary { border-bottom: 3px solid var(--ink); }
-  .faq-item p { padding: 20px 24px 24px; color: var(--muted); font-size: 17px; }
+  .faq-item p { padding: 20px 24px 24px; color: var(--muted); font-size: 17px; overflow: hidden; }
   .faq-item summary:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
 
   @media (max-width: 900px) {
@@ -80,6 +82,9 @@
   }
   @media (min-width: 901px) and (max-width: 1100px) { .span3 { grid-column: span 6; } }
 </style>
+<script>/* 움직임 준비: 움직임 줄이기 설정이 아니면 처음 상태를 숨겨 둔다. motion.js가 3초 안에 못 뜨면 그냥 보여 준다 */
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('motion'); setTimeout(function () { if (!window.__motionReady) document.documentElement.classList.remove('motion'); }, 3000); }</script>
+<script type="module" src="motion.js"></script>
 </head>
 <body>
 <header class="nav">
@@ -94,57 +99,57 @@
   <section class="hero">
     <div class="wrap grid">
       <div class="hero-text">
-        <p class="eyebrow">어르신 키오스크 길잡이</p>
-        <h1>키오스크 앞에서<br><em>멈추지 않게.</em></h1>
-        <p class="lead">아무 키오스크나 폰으로 비추면, 이어폰으로 <b>지금 무엇을 누를지</b> 쉬운 말로 한 단계씩 알려 드려요. 「내 방식 QR」이 있는 키오스크는 AI가 화면을 큰 글씨·쉬운 말로 다시 그립니다.</p>
-        <div class="cta"><a class="btn y" href="demo.html">직접 해보기</a><a class="btn" href="https://github.com/dp44rk/camelon-mywaykiosk">GitHub</a></div>
+        <p class="eyebrow" data-a>어르신 키오스크 길잡이</p>
+        <h1><span class="ln"><span>키오스크 앞에서</span></span><span class="ln"><span><em>멈추지 않게.</em></span></span></h1>
+        <p class="lead" data-a>아무 키오스크나 폰으로 비추면, 이어폰으로 <b>지금 무엇을 누를지</b> 쉬운 말로 한 단계씩 알려 드려요. 「내 방식 QR」이 있는 키오스크는 AI가 화면을 큰 글씨·쉬운 말로 다시 그립니다.</p>
+        <div class="cta"><a class="btn y" href="demo.html" data-a>직접 해보기</a><a class="btn" href="https://github.com/dp44rk/camelon-mywaykiosk" data-a>GitHub</a></div>
       </div>
-      <div class="hero-art"><img src="img/mockup-phone-flow.jpg" width="1920" height="1440" alt="폰 화면 세 개: 내 방식 정하기, '차가운 것' 누르기 안내, 결제 금액 확인"></div>
-      <div class="say" role="note">
-        <div class="ear" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="square"><path d="M8 18h8l10-8v28l-10-8H8z" fill="#fff"/><path d="M32 17c3 4 3 10 0 14M37 12c6 7 6 17 0 24"/></svg></div>
+      <div class="hero-art" data-a><img src="img/mockup-phone-flow.jpg" width="1920" height="1440" alt="폰 화면 세 개: 내 방식 정하기, '차가운 것' 누르기 안내, 결제 금액 확인"></div>
+      <div class="say" role="note" data-a>
+        <div class="ear" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="square"><path d="M8 18h8l10-8v28l-10-8H8z" fill="#fff"/><path class="w" d="M32 17c3 4 3 10 0 14"/><path class="w" d="M37 12c6 7 6 17 0 24"/></svg></div>
         <p>"화면 오른쪽 가운데에 주황색 네모가 있어요. 영어로 '테이크 아웃'이라고 써 있어요. 가지고 가기라는 뜻이에요. 그걸 누르세요."<small>실제 안내 문장 — 위치·색은 AI가 아니라 규칙 코드로 계산해서 매번 같고, 지어내지 않아요.</small></p>
       </div>
     </div>
   </section>
 
   <section id="problem">
-    <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow">왜 필요한가</p><h2>키오스크는 늘었는데,<br>어르신은 뒷사람 눈치를 봅니다.</h2></div>
-      <div class="card span4"><p class="num">64.2%</p><h3>65세 이상, 키오스크 주문이 어렵다</h3><p>고령층 1만 97명을 조사한 결과예요.</p><p class="src">보건복지부 「2020 노인실태조사」 (파이낸셜뉴스 2023.4 보도)</p></div>
-      <div class="card span4 y"><p class="num">51.4%</p><h3>조작 절차가 복잡해서</h3><p>뒷사람 눈치 49%, 그림·글씨가 작아서 44.1%가 뒤를 이었어요.</p><p class="src">한국소비자원 고령소비자 키오스크 이용 조사 (파이낸셜뉴스 2023.4 보도)</p></div>
-      <div class="card span4 b"><p class="num">2.4배</p><h3>4년 사이 늘어난 키오스크</h3><p>2019년 18만 9,951대 → 2022년 45만 4,741대.</p><p class="src">과학기술정보통신부 「키오스크 접근성 현황조사」 (파이낸셜뉴스 2023.4 보도)</p></div>
-      <p class="note">기존 해법은 키오스크마다 접근성 기능을 새로 넣어야 해서 느리게 퍼져요. 내 방식 QR은 <b>지금 있는 키오스크</b>에서 바로 쓸 수 있게 폰에서 시작합니다.</p>
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow">왜 필요한가</p><h2>키오스크는 늘었는데,<br>어르신은 뒷사람 눈치를 봅니다.</h2></div>
+      <div class="card span4" data-a><p class="num" data-count="64.2%">64.2%</p><h3>65세 이상, 키오스크 주문이 어렵다</h3><p>고령층 1만 97명을 조사한 결과예요.</p><p class="src">보건복지부 「2020 노인실태조사」 (파이낸셜뉴스 2023.4 보도)</p></div>
+      <div class="card span4 y" data-a><p class="num" data-count="51.4%">51.4%</p><h3>조작 절차가 복잡해서</h3><p>뒷사람 눈치 49%, 그림·글씨가 작아서 44.1%가 뒤를 이었어요.</p><p class="src">한국소비자원 고령소비자 키오스크 이용 조사 (파이낸셜뉴스 2023.4 보도)</p></div>
+      <div class="card span4 b" data-a><p class="num" data-count="2.4배">2.4배</p><h3>4년 사이 늘어난 키오스크</h3><p>2019년 18만 9,951대 → 2022년 45만 4,741대.</p><p class="src">과학기술정보통신부 「키오스크 접근성 현황조사」 (파이낸셜뉴스 2023.4 보도)</p></div>
+      <p class="note" data-a>기존 해법은 키오스크마다 접근성 기능을 새로 넣어야 해서 느리게 퍼져요. 내 방식 QR은 <b>지금 있는 키오스크</b>에서 바로 쓸 수 있게 폰에서 시작합니다.</p>
     </div>
   </section>
 
   <section id="how">
-    <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow b">어떻게 쓰나</p><h2>정하고, 말하고, 비추면 끝.</h2><p class="lead">처음 한 번만 내 방식을 정하면, 그다음부터는 주문할 것을 말하고 키오스크를 비추기만 하면 돼요.</p></div>
-      <article class="card step span4"><div class="shot"><img src="img/phone-1-setup.jpg" alt="내 방식 정하기 첫 질문 화면" loading="lazy"></div><div class="body"><span class="n">1</span><h3>내 방식 정하기 (처음 1번, 1분)</h3><p>목소리 빠르기, 글씨, 키오스크 경험, 적립·권유 처리를 목소리로 묻고 큰 버튼으로 답해요. 결과는 QR로 만들어 가족이 대신 보내 줄 수도 있어요.</p></div></article>
-      <article class="card step span4"><div class="shot"><img src="img/phone-3-goal.jpg" alt="무엇을 주문할지 말하는 화면" loading="lazy"></div><div class="body"><span class="n">2</span><h3>하고 싶은 것 말하기</h3><p>"차가운 아메리카노 한 잔, 가져갈게." AI가 주문으로 정리하고 "맞아요?" 하고 되물어요. 화면 전체를 읽지 않고, 목표까지 필요한 말만 해요.</p></div></article>
-      <article class="card step span4"><div class="shot"><img src="img/phone-5-guide.jpg" alt="'차가운 것' 누르기 안내 화면" loading="lazy"></div><div class="body"><span class="n">3</span><h3>비추고 듣기</h3><p>키오스크를 찍으면 이어폰으로 한 단계를 알려 줘요. 누르고 나면 다음 단계로. 결제 전에는 금액을 읽고 꼭 "네"를 받아요.</p></div></article>
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow b">어떻게 쓰나</p><h2>정하고, 말하고, 비추면 끝.</h2><p class="lead">처음 한 번만 내 방식을 정하면, 그다음부터는 주문할 것을 말하고 키오스크를 비추기만 하면 돼요.</p></div>
+      <article class="card step span4" data-a><div class="shot"><img src="img/phone-1-setup.jpg" alt="내 방식 정하기 첫 질문 화면" loading="lazy"></div><div class="body"><span class="n">1</span><h3>내 방식 정하기 (처음 1번, 1분)</h3><p>목소리 빠르기, 글씨, 키오스크 경험, 적립·권유 처리를 목소리로 묻고 큰 버튼으로 답해요. 결과는 QR로 만들어 가족이 대신 보내 줄 수도 있어요.</p></div></article>
+      <article class="card step span4" data-a><div class="shot"><img src="img/phone-3-goal.jpg" alt="무엇을 주문할지 말하는 화면" loading="lazy"></div><div class="body"><span class="n">2</span><h3>하고 싶은 것 말하기</h3><p>"차가운 아메리카노 한 잔, 가져갈게." AI가 주문으로 정리하고 "맞아요?" 하고 되물어요. 화면 전체를 읽지 않고, 목표까지 필요한 말만 해요.</p></div></article>
+      <article class="card step span4" data-a><div class="shot"><img src="img/phone-5-guide.jpg" alt="'차가운 것' 누르기 안내 화면" loading="lazy"></div><div class="body"><span class="n">3</span><h3>비추고 듣기</h3><p>키오스크를 찍으면 이어폰으로 한 단계를 알려 줘요. 누르고 나면 다음 단계로. 결제 전에는 금액을 읽고 꼭 "네"를 받아요.</p></div></article>
     </div>
   </section>
 
   <section id="modes">
-    <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow y">두 가지 모드</p><h2>아무 키오스크에서도, 연동 키오스크에서는 더 쉽게.</h2></div>
-      <article class="card mode span6"><span class="tag">카메라 모드</span><h3>지금 있는 아무 키오스크</h3><ul><li>폰 사진을 비전 모델(Qwen3.8-27B, Air API)이 읽어 버튼·좌표·화면 종류를 정리</li><li>"오른쪽 위, 노란 네모, '포장'" — 위치·색·글자는 규칙 코드로 계산</li><li>키오스크 업체의 협조가 필요 없어요</li></ul></article>
-      <article class="card mode b span6"><span class="tag">연동 모드</span><h3>「내 방식 QR」 배지가 있는 키오스크</h3><ul><li>키오스크에 뜬 QR을 폰으로 찍으면 연결 (원제안자가 고른 방식)</li><li>키오스크 화면을 <b>AI 화면 변환</b>으로 다시 그림</li><li>폰을 내려놓아도 화면이 바뀔 때마다 자동 안내</li></ul></article>
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow y">두 가지 모드</p><h2>아무 키오스크에서도, 연동 키오스크에서는 더 쉽게.</h2></div>
+      <article class="card mode span6" data-a><span class="tag">카메라 모드</span><h3>지금 있는 아무 키오스크</h3><ul><li>폰 사진을 비전 모델(Qwen3.8-27B, Air API)이 읽어 버튼·좌표·화면 종류를 정리</li><li>"오른쪽 위, 노란 네모, '포장'" — 위치·색·글자는 규칙 코드로 계산</li><li>키오스크 업체의 협조가 필요 없어요</li></ul></article>
+      <article class="card mode b span6" data-a><span class="tag">연동 모드</span><h3>「내 방식 QR」 배지가 있는 키오스크</h3><ul><li>키오스크에 뜬 QR을 폰으로 찍으면 연결 (원제안자가 고른 방식)</li><li>키오스크 화면을 <b>AI 화면 변환</b>으로 다시 그림</li><li>폰을 내려놓아도 화면이 바뀔 때마다 자동 안내</li></ul></article>
     </div>
   </section>
 
   <section id="convert">
     <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow">AI 화면 변환</p><h2>같은 키오스크, 내 방식 화면.</h2><p class="lead">연동 키오스크는 자기 화면 구조를 알려 주고, AI가 어르신용 화면을 다시 설계해요. 변환된 버튼을 누르면 원래 버튼을 누른 것과 같아서 기존 결제 흐름은 그대로예요.</p></div>
-      <div class="convert-art"><img src="img/mockup-kiosk-convert.jpg" width="1920" height="1440" alt="왼쪽: 원래 키오스크 옵션 화면, 오른쪽: 큰 글씨·쉬운 말로 변환된 화면" loading="lazy"></div>
-      <div class="convert-text">
-        <div class="item"><b>쉬운 말 라벨</b><span>HOT → 따뜻한 것, Regular → 보통 크기, 결제하기 → 돈 내기. 원래 글자는 작게 함께 보여요.</span></div>
-        <div class="item"><b>묶음과 순서</b><span>같은 질문의 선택지끼리 묶고, 고를 것 → 결정 → 거절 → 처음으로 순서로.</span></div>
-        <div class="item"><b>검증기</b><span>버튼이 빠지거나 지어낸 버튼이 있으면 바로잡고, 어려운 라벨은 규칙 라벨로 바꿔요.</span></div>
-        <div class="item"><b>케이스별 저장</b><span>같은 화면은 저장해 다시 쓰고, AI가 늦으면 규칙 변환을 먼저 그려요.</span></div>
+      <div class="sec-head" data-a><p class="eyebrow">AI 화면 변환</p><h2>같은 키오스크, 내 방식 화면.</h2><p class="lead">연동 키오스크는 자기 화면 구조를 알려 주고, AI가 어르신용 화면을 다시 설계해요. 변환된 버튼을 누르면 원래 버튼을 누른 것과 같아서 기존 결제 흐름은 그대로예요.</p></div>
+      <div class="convert-art" data-a data-from="left"><img src="img/mockup-kiosk-convert.jpg" width="1920" height="1440" alt="왼쪽: 원래 키오스크 옵션 화면, 오른쪽: 큰 글씨·쉬운 말로 변환된 화면" loading="lazy"></div>
+      <div class="convert-text" data-a-group>
+        <div class="item" data-a><b>쉬운 말 라벨</b><span>HOT → 따뜻한 것, Regular → 보통 크기, 결제하기 → 돈 내기. 원래 글자는 작게 함께 보여요.</span></div>
+        <div class="item" data-a><b>묶음과 순서</b><span>같은 질문의 선택지끼리 묶고, 고를 것 → 결정 → 거절 → 처음으로 순서로.</span></div>
+        <div class="item" data-a><b>검증기</b><span>버튼이 빠지거나 지어낸 버튼이 있으면 바로잡고, 어려운 라벨은 규칙 라벨로 바꿔요.</span></div>
+        <div class="item" data-a><b>케이스별 저장</b><span>같은 화면은 저장해 다시 쓰고, AI가 늦으면 규칙 변환을 먼저 그려요.</span></div>
       </div>
-      <div class="tbl qa"><table>
+      <div class="tbl qa" data-a><table>
         <tr><th>원제안자 답변 (사전질의)</th><th>반영</th></tr>
         <tr><td>카페·식당 우선</td><td>목업 카페·식당 키오스크로 시연</td></tr>
         <tr><td>키오스크에 뜬 QR을 폰으로 스캔</td><td>키오스크 「내 방식 QR」 배지 → 폰 사진에서 자동 인식해 연동</td></tr>
@@ -157,8 +162,8 @@
 
   <section id="plain">
     <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow b">"쉽게 알아듣는다"의 정의</p><h2>말 하나하나를 규칙으로 검사해요.</h2><p class="lead">국립국어원(2024)이 70~80대 200명의 키오스크 사용을 조사해 낸 쉬운 언어 예시(웰던 → 바싹 익히기, 명세표 인자 → 명세표 받기)를 바탕으로 했어요.</p></div>
-      <div class="tbl"><table>
+      <div class="sec-head" data-a><p class="eyebrow b">"쉽게 알아듣는다"의 정의</p><h2>말 하나하나를 규칙으로 검사해요.</h2><p class="lead">국립국어원(2024)이 70~80대 200명의 키오스크 사용을 조사해 낸 쉬운 언어 예시(웰던 → 바싹 익히기, 명세표 인자 → 명세표 받기)를 바탕으로 했어요.</p></div>
+      <div class="tbl" data-a><table>
         <tr><th>층위</th><th>규칙</th><th>예시</th></tr>
         <tr><td>말</td><td>외래어·전문어는 쉬운 우리말. 화면에 쓰인 글자는 그대로 읽고 뜻을 붙임 (화면에서 찾아야 하니까)</td><td>'아이스'라고 써 있어요. 차가운 것이라는 뜻이에요.</td></tr>
         <tr><td>길이</td><td>한 문장 7~12어절 이하 (경험에 따라)</td><td>오른쪽 위를 보세요.</td></tr>
@@ -171,46 +176,46 @@
   </section>
 
   <section id="safe">
-    <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow y">안전장치</p><h2>AI가 틀려도, 돈은 함부로 나가지 않게.</h2></div>
-      <div class="card span3"><h3>결제 전 확인</h3><p>결제 화면이면 금액을 읽고 "네"를 받기 전에는 결제 버튼을 안내하지 않아요. 규칙으로 막아요.</p></div>
-      <div class="card span3"><h3>권유·광고 거절</h3><p>세트 변경, 앱 설치 광고 같은 창은 "안 사도 돼요"라고 알려 줘요.</p></div>
-      <div class="card span3"><h3>막히면 직원 도움</h3><p>3번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있어요.</p></div>
-      <div class="card span3"><h3>개인정보 없음</h3><p>내 방식 QR에는 빠르기·글씨 같은 설정만. 이름·연락처·장애 여부는 받지 않아요.</p></div>
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow y">안전장치</p><h2>AI가 틀려도, 돈은 함부로 나가지 않게.</h2></div>
+      <div class="card span3" data-a><h3>결제 전 확인</h3><p>결제 화면이면 금액을 읽고 "네"를 받기 전에는 결제 버튼을 안내하지 않아요. 규칙으로 막아요.</p></div>
+      <div class="card span3" data-a><h3>권유·광고 거절</h3><p>세트 변경, 앱 설치 광고 같은 창은 "안 사도 돼요"라고 알려 줘요.</p></div>
+      <div class="card span3" data-a><h3>막히면 직원 도움</h3><p>3번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있어요.</p></div>
+      <div class="card span3" data-a><h3>개인정보 없음</h3><p>내 방식 QR에는 빠르기·글씨 같은 설정만. 이름·연락처·장애 여부는 받지 않아요.</p></div>
     </div>
   </section>
 
   <section id="result">
-    <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow">성과 (2026.10.29 기준)</p><h2>목업 키오스크에서 끝까지 주문했어요.</h2><p class="lead">폰 앱이 말한 버튼을 그대로 누르는 자동 시험이에요. 사람은 끼어들지 않았어요.</p></div>
-      <div class="card span3"><p class="num">5 / 5</p><h3>주문 완료</h3><p>카페 3개·식당 2개 목표, 다른 탭에 있는 메뉴까지</p></div>
-      <div class="card span3 y"><p class="num">100%</p><h3>화면 변환 성공 (규칙)</h3><p>69화면·389버튼, 빠짐·지어냄 0</p></div>
-      <div class="card span3"><p class="num sm">29.2 → 0</p><h3>어려운 말 /100어절</h3><p>키오스크 원문 대비 안내 문장</p></div>
-      <div class="card span3 b"><p class="num sm">8.1 → 1</p><h3>한 번에 받는 정보</h3><p>화면당 선택지 평균 8.1개 → 안내당 할 일 1개 이하</p></div>
-      <p class="note">한계도 적어 둡니다. 규칙 변환·어려운 말 지표는 같은 사전으로 만들고 같은 사전으로 검사해서 높게 나와요. 카메라 모드(비전 모델) 정확도와 AI 화면 변환 성공률은 측정 중이고, 어르신 사용자 시험은 아직이에요. 자세한 내용은 <a href="https://github.com/dp44rk/camelon-mywaykiosk/blob/main/docs/EVAL.md">EVAL.md</a>.</p>
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow">성과 (2026.10.29 기준)</p><h2>목업 키오스크에서 끝까지 주문했어요.</h2><p class="lead">폰 앱이 말한 버튼을 그대로 누르는 자동 시험이에요. 사람은 끼어들지 않았어요.</p></div>
+      <div class="card span3" data-a><p class="num">5 / 5</p><h3>주문 완료</h3><p>카페 3개·식당 2개 목표, 다른 탭에 있는 메뉴까지</p></div>
+      <div class="card span3 y" data-a><p class="num" data-count="100%">100%</p><h3>화면 변환 성공 (규칙)</h3><p>69화면·389버튼, 빠짐·지어냄 0</p></div>
+      <div class="card span3" data-a><p class="num sm">29.2 → 0</p><h3>어려운 말 /100어절</h3><p>키오스크 원문 대비 안내 문장</p></div>
+      <div class="card span3 b" data-a><p class="num sm">8.1 → 1</p><h3>한 번에 받는 정보</h3><p>화면당 선택지 평균 8.1개 → 안내당 할 일 1개 이하</p></div>
+      <p class="note" data-a>한계도 적어 둡니다. 규칙 변환·어려운 말 지표는 같은 사전으로 만들고 같은 사전으로 검사해서 높게 나와요. 카메라 모드(비전 모델) 정확도와 AI 화면 변환 성공률은 측정 중이고, 어르신 사용자 시험은 아직이에요. 자세한 내용은 <a href="https://github.com/dp44rk/camelon-mywaykiosk/blob/main/docs/EVAL.md">EVAL.md</a>.</p>
     </div>
   </section>
 
   <section id="faq">
     <div class="wrap grid">
-      <div class="sec-head"><p class="eyebrow b">자주 묻는 질문</p><h2>궁금한 점을 모았어요.</h2></div>
-      <div class="faq">
-      <details class="faq-item"><summary>앱을 따로 설치해야 하나요?</summary><p>아니요. 주소나 QR로 바로 열리는 웹 앱이에요. 자주 쓰신다면 폰 홈 화면에 추가해 앱처럼 쓸 수 있어요.</p></details>
-      <details class="faq-item"><summary>아무 키오스크에서나 되나요?</summary><p>카메라 모드는 화면이 보이는 키오스크라면 쓸 수 있어요. 다만 사진으로 화면을 읽는 정확도는 지금 측정 중이에요. 「내 방식 QR」 배지가 있는 연동 키오스크는 키오스크가 화면 구조를 직접 알려 주기 때문에 더 정확하고, 화면도 내 방식으로 바뀌어요.</p></details>
-      <details class="faq-item"><summary>키오스크 업체는 무엇을 해야 하나요?</summary><p>카메라 모드는 아무것도 하지 않아도 돼요. 연동 모드는 화면의 버튼 정보를 보내는 작은 코드와 화면 구석의 QR 배지만 넣으면 돼요. 결제·주문 시스템은 그대로 둬요.</p></details>
-      <details class="faq-item"><summary>결제를 AI가 대신하나요?</summary><p>아니요. 버튼을 누르고 카드를 꽂는 건 사용자예요. 결제 화면에서는 금액을 읽어 드리고, "네"라고 확인하기 전에는 결제 버튼을 안내하지 않아요.</p></details>
-      <details class="faq-item"><summary>안내가 틀리면 어떻게 되나요?</summary><p>"다시 찍어 주세요"라고 하거나, 같은 화면에서 세 번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있게 해요. 위치와 색은 AI가 아니라 규칙 코드로 계산해서 지어내지 않아요.</p></details>
-      <details class="faq-item"><summary>스마트폰이 서툰 분도 쓸 수 있나요?</summary><p>처음 설정은 질문 다섯 개를 큰 버튼으로 고르면 끝나요. 가족이 대신 설정해서 내 방식 QR로 보내 줄 수도 있어요. 찍기 버튼은 화면 아래의 큰 노란 버튼 하나예요.</p></details>
-      <details class="faq-item"><summary>말로 해도 되나요?</summary><p>네. 주문할 것을 말로 하고, "다시", "천천히", "그게 뭐야?", "모르겠어" 같은 말도 알아들어요. 음성 인식이 안 되는 폰에서는 버튼과 글로 똑같이 할 수 있어요.</p></details>
-      <details class="faq-item"><summary>제 정보가 저장되나요?</summary><p>내 방식 QR에는 말 빠르기·글씨 크기 같은 설정만 들어가요. 이름·전화번호·장애 여부는 받지 않아요. 키오스크 사진은 안내를 만드는 데만 쓰고 서버에 사진을 남기지 않아요.</p></details>
-      <details class="faq-item"><summary>인터넷이 꼭 필요한가요?</summary><p>네. 화면을 읽고 음성을 만드는 AI가 서버에서 돌아가요. 이 사이트의 시연 페이지는 서버 없이도 돌아가요.</p></details>
+      <div class="sec-head" data-a><p class="eyebrow b">자주 묻는 질문</p><h2>궁금한 점을 모았어요.</h2></div>
+      <div class="faq" data-a-group>
+      <details class="faq-item" data-a><summary>앱을 따로 설치해야 하나요?</summary><p>아니요. 주소나 QR로 바로 열리는 웹 앱이에요. 자주 쓰신다면 폰 홈 화면에 추가해 앱처럼 쓸 수 있어요.</p></details>
+      <details class="faq-item" data-a><summary>아무 키오스크에서나 되나요?</summary><p>카메라 모드는 화면이 보이는 키오스크라면 쓸 수 있어요. 다만 사진으로 화면을 읽는 정확도는 지금 측정 중이에요. 「내 방식 QR」 배지가 있는 연동 키오스크는 키오스크가 화면 구조를 직접 알려 주기 때문에 더 정확하고, 화면도 내 방식으로 바뀌어요.</p></details>
+      <details class="faq-item" data-a><summary>키오스크 업체는 무엇을 해야 하나요?</summary><p>카메라 모드는 아무것도 하지 않아도 돼요. 연동 모드는 화면의 버튼 정보를 보내는 작은 코드와 화면 구석의 QR 배지만 넣으면 돼요. 결제·주문 시스템은 그대로 둬요.</p></details>
+      <details class="faq-item" data-a><summary>결제를 AI가 대신하나요?</summary><p>아니요. 버튼을 누르고 카드를 꽂는 건 사용자예요. 결제 화면에서는 금액을 읽어 드리고, "네"라고 확인하기 전에는 결제 버튼을 안내하지 않아요.</p></details>
+      <details class="faq-item" data-a><summary>안내가 틀리면 어떻게 되나요?</summary><p>"다시 찍어 주세요"라고 하거나, 같은 화면에서 세 번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있게 해요. 위치와 색은 AI가 아니라 규칙 코드로 계산해서 지어내지 않아요.</p></details>
+      <details class="faq-item" data-a><summary>스마트폰이 서툰 분도 쓸 수 있나요?</summary><p>처음 설정은 질문 다섯 개를 큰 버튼으로 고르면 끝나요. 가족이 대신 설정해서 내 방식 QR로 보내 줄 수도 있어요. 찍기 버튼은 화면 아래의 큰 노란 버튼 하나예요.</p></details>
+      <details class="faq-item" data-a><summary>말로 해도 되나요?</summary><p>네. 주문할 것을 말로 하고, "다시", "천천히", "그게 뭐야?", "모르겠어" 같은 말도 알아들어요. 음성 인식이 안 되는 폰에서는 버튼과 글로 똑같이 할 수 있어요.</p></details>
+      <details class="faq-item" data-a><summary>제 정보가 저장되나요?</summary><p>내 방식 QR에는 말 빠르기·글씨 크기 같은 설정만 들어가요. 이름·전화번호·장애 여부는 받지 않아요. 키오스크 사진은 안내를 만드는 데만 쓰고 서버에 사진을 남기지 않아요.</p></details>
+      <details class="faq-item" data-a><summary>인터넷이 꼭 필요한가요?</summary><p>네. 화면을 읽고 음성을 만드는 AI가 서버에서 돌아가요. 이 사이트의 시연 페이지는 서버 없이도 돌아가요.</p></details>
       </div>
     </div>
   </section>
 
   <section id="try">
     <div class="wrap grid">
-      <div class="cta-block">
+      <div class="cta-block" data-a>
         <div><h2>서버 없이 바로 해 보세요.</h2><p class="lead" style="margin-top:12px">시연 페이지는 목업 키오스크와 어르신의 폰을 나란히 보여 줘요. 폰이 말한 대로 키오스크를 눌러 보세요.</p></div>
         <div class="btns"><a class="btn b" href="demo.html">시연 페이지 열기</a><a class="btn" href="app/">폰 앱 열기</a></div>
       </div>
