@@ -52,7 +52,15 @@ export function pickForGoal(screen, goal, state) {
       if (added >= Math.max(1, (goal?.items || []).length)) return by((e) => e.k === 'pay') ?? by((e) => e.k === 'next' && !/^[◀▶<>]$/.test(e.t));
       const hit = by((e) => e.k === 'item' && names.some((n) => norm(e.t).includes(norm(n)) || norm(n).includes(norm(e.t))));
       if (hit !== null) return hit;
-      return by((e) => e.k === 'tab' && /커피|coffee|음료|식사|메인/i.test(e.t));
+      // 안 보이면 찾아 나선다: 다음 쪽(▶) → 다음 분류 탭
+      const nextPage = els.find((e) => e.k === 'next' && /^[▶>→]$/.test(e.t.trim()));
+      if (nextPage) return nextPage.id;
+      const tabs = els.filter((e) => e.k === 'tab').sort((a, b) => a.box[0] - b.box[0]);
+      if (tabs.length) {
+        const cur = tabs.findIndex((e) => e.sel);
+        return tabs[(cur + 1) % tabs.length].id;
+      }
+      return null;
     }
     case 'option': {
       const t = goal?.items?.[0]?.temp;
