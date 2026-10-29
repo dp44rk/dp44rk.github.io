@@ -34,7 +34,8 @@ h1, h2, h3, p { margin: 0; word-break: keep-all; }
 .btn.y { background: var(--yellow); } .btn.b { background: var(--blue); color: #fff; } .btn.sm { height: 44px; padding: 0 16px; font-size: 16px; box-shadow: 4px 4px 0 var(--ink); }
 
 /* 섹션 */
-section { padding: 128px 0 0; }
+section { padding: 128px 0 0; scroll-margin-top: 0; }
+section[id] { scroll-margin-top: -48px; }
 section:last-of-type { padding-bottom: 128px; }
 .eyebrow { font-weight: 800; font-size: 15px; letter-spacing: .08em; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .eyebrow::before { content: ''; width: 16px; height: 16px; background: var(--red); }

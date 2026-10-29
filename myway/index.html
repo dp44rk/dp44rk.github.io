@@ -61,6 +61,16 @@
   .cta-block h2 { font-size: clamp(28px, 3vw, 40px); }
   .cta-block .btns { display: flex; gap: 16px; flex-wrap: wrap; }
 
+  .faq { grid-column: 1 / -1; display: grid; gap: 16px; }
+  .faq-item { background: var(--white); border: var(--line) solid var(--ink); }
+  .faq-item summary { list-style: none; cursor: pointer; padding: 20px 64px 20px 24px; font-size: 20px; font-weight: 800; position: relative; line-height: 1.4; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after { content: '+'; position: absolute; right: 20px; top: 50%; width: 32px; height: 32px; margin-top: -16px; display: grid; place-items: center; background: var(--yellow); border: 3px solid var(--ink); font-size: 22px; font-weight: 900; line-height: 1; }
+  .faq-item[open] summary::after { content: '−'; background: var(--blue); color: #fff; }
+  .faq-item[open] summary { border-bottom: 3px solid var(--ink); }
+  .faq-item p { padding: 20px 24px 24px; color: var(--muted); font-size: 17px; }
+  .faq-item summary:focus-visible { outline: 4px solid var(--blue); outline-offset: 2px; }
+
   @media (max-width: 900px) {
     .hero-text, .hero-art, .convert-art, .convert-text { grid-column: 1 / -1; }
     .hero-art { margin-top: 24px; }
@@ -75,7 +85,7 @@
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="./"><span class="marks"><i class="c"></i><i class="s"></i><i class="t"></i></span>내 방식 QR</a>
-    <nav aria-label="페이지 안 이동"><a href="#problem">왜 필요한가</a><a href="#how">어떻게 쓰나</a><a href="#convert">AI 화면 변환</a><a href="#plain">쉬운 말</a><a href="#result">성과</a></nav>
+    <nav aria-label="페이지 안 이동"><a href="#problem">왜 필요한가</a><a href="#how">어떻게 쓰나</a><a href="#convert">AI 화면 변환</a><a href="#plain">쉬운 말</a><a href="#result">성과</a><a href="#faq">자주 묻는 질문</a></nav>
     <a class="btn y sm" href="demo.html">직접 해보기</a>
   </div>
 </header>
@@ -178,6 +188,23 @@
       <div class="card span3"><p class="num sm">29.2 → 0</p><h3>어려운 말 /100어절</h3><p>키오스크 원문 대비 안내 문장</p></div>
       <div class="card span3 b"><p class="num sm">8.1 → 1</p><h3>한 번에 받는 정보</h3><p>화면당 선택지 평균 8.1개 → 안내당 할 일 1개 이하</p></div>
       <p class="note">한계도 적어 둡니다. 규칙 변환·어려운 말 지표는 같은 사전으로 만들고 같은 사전으로 검사해서 높게 나와요. 카메라 모드(비전 모델) 정확도와 AI 화면 변환 성공률은 측정 중이고, 어르신 사용자 시험은 아직이에요. 자세한 내용은 <a href="https://github.com/dp44rk/camelon-mywaykiosk/blob/main/docs/EVAL.md">EVAL.md</a>.</p>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap grid">
+      <div class="sec-head"><p class="eyebrow b">자주 묻는 질문</p><h2>궁금한 점을 모았어요.</h2></div>
+      <div class="faq">
+      <details class="faq-item"><summary>앱을 따로 설치해야 하나요?</summary><p>아니요. 주소나 QR로 바로 열리는 웹 앱이에요. 자주 쓰신다면 폰 홈 화면에 추가해 앱처럼 쓸 수 있어요.</p></details>
+      <details class="faq-item"><summary>아무 키오스크에서나 되나요?</summary><p>카메라 모드는 화면이 보이는 키오스크라면 쓸 수 있어요. 다만 사진으로 화면을 읽는 정확도는 지금 측정 중이에요. 「내 방식 QR」 배지가 있는 연동 키오스크는 키오스크가 화면 구조를 직접 알려 주기 때문에 더 정확하고, 화면도 내 방식으로 바뀌어요.</p></details>
+      <details class="faq-item"><summary>키오스크 업체는 무엇을 해야 하나요?</summary><p>카메라 모드는 아무것도 하지 않아도 돼요. 연동 모드는 화면의 버튼 정보를 보내는 작은 코드와 화면 구석의 QR 배지만 넣으면 돼요. 결제·주문 시스템은 그대로 둬요.</p></details>
+      <details class="faq-item"><summary>결제를 AI가 대신하나요?</summary><p>아니요. 버튼을 누르고 카드를 꽂는 건 사용자예요. 결제 화면에서는 금액을 읽어 드리고, "네"라고 확인하기 전에는 결제 버튼을 안내하지 않아요.</p></details>
+      <details class="faq-item"><summary>안내가 틀리면 어떻게 되나요?</summary><p>"다시 찍어 주세요"라고 하거나, 같은 화면에서 세 번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있게 해요. 위치와 색은 AI가 아니라 규칙 코드로 계산해서 지어내지 않아요.</p></details>
+      <details class="faq-item"><summary>스마트폰이 서툰 분도 쓸 수 있나요?</summary><p>처음 설정은 질문 다섯 개를 큰 버튼으로 고르면 끝나요. 가족이 대신 설정해서 내 방식 QR로 보내 줄 수도 있어요. 찍기 버튼은 화면 아래의 큰 노란 버튼 하나예요.</p></details>
+      <details class="faq-item"><summary>말로 해도 되나요?</summary><p>네. 주문할 것을 말로 하고, "다시", "천천히", "그게 뭐야?", "모르겠어" 같은 말도 알아들어요. 음성 인식이 안 되는 폰에서는 버튼과 글로 똑같이 할 수 있어요.</p></details>
+      <details class="faq-item"><summary>제 정보가 저장되나요?</summary><p>내 방식 QR에는 말 빠르기·글씨 크기 같은 설정만 들어가요. 이름·전화번호·장애 여부는 받지 않아요. 키오스크 사진은 안내를 만드는 데만 쓰고 서버에 사진을 남기지 않아요.</p></details>
+      <details class="faq-item"><summary>인터넷이 꼭 필요한가요?</summary><p>네. 화면을 읽고 음성을 만드는 AI가 서버에서 돌아가요. 이 사이트의 시연 페이지는 서버 없이도 돌아가요.</p></details>
+      </div>
     </div>
   </section>
 
