@@ -25,7 +25,9 @@ h1, h2, h3, p { margin: 0; word-break: keep-all; }
 .nav .wrap { height: 72px; display: flex; align-items: center; gap: 32px; }
 .nav .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 22px; text-decoration: none; white-space: nowrap; }
 .nav nav { display: flex; gap: 24px; margin-left: auto; font-weight: 700; font-size: 16px; }
-.nav nav a { text-decoration: none; }
+.nav nav a { text-decoration: none; white-space: nowrap; }
+@media (max-width: 1240px) { .nav .wrap { gap: 24px; } .nav nav { gap: 16px; font-size: 15px; } }
+@media (max-width: 1100px) { .nav nav { display: none; } .nav .wrap > .btn, .nav .wrap > a.btn { margin-left: auto; } }
 .nav nav a:hover { text-decoration: underline; text-underline-offset: 6px; }
 
 /* 버튼 */

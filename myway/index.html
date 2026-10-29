@@ -55,6 +55,28 @@
   .qa { grid-column: 1 / -1; margin-top: 48px; }
   .qa td:nth-child(2) { color: var(--muted); }
 
+  /* 기술 */
+  .flow { grid-column: 1 / -1; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: var(--line) solid var(--ink); background: var(--white); counter-reset: f; }
+  .flow li { position: relative; padding: 24px 20px 24px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .flow li + li { border-left: var(--line) solid var(--ink); }
+  .flow li + li::before { content: ''; position: absolute; left: -16px; top: 34px; width: 0; height: 0; border: 12px solid transparent; border-left: 14px solid var(--ink); z-index: 1; }
+  .flow .k { width: 40px; height: 40px; display: grid; place-items: center; font-weight: 900; font-size: 20px; color: #fff; background: var(--ink); }
+  .flow li:nth-child(2) .k { background: var(--blue); } .flow li:nth-child(3) .k { background: var(--red); } .flow li:nth-child(4) .k { background: var(--yellow); color: var(--ink); }
+  .flow b { font-size: 19px; line-height: 1.35; }
+  .flow span { font-size: 15px; color: var(--muted); line-height: 1.5; word-break: keep-all; }
+  .flow li.ai { background: #dce6f7; } .flow li.rule { background: #fcebb0; }
+  .flow-key { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; font-weight: 700; margin: -8px 0 24px; }
+  .flow-key i { display: inline-block; width: 16px; height: 16px; border: 3px solid var(--ink); vertical-align: -3px; margin-right: 6px; }
+  .flow-key .ai { background: #dce6f7; } .flow-key .rule { background: #fcebb0; }
+  .tech h3 { display: flex; align-items: center; gap: 10px; }
+  .tech h3 i { flex: none; width: 18px; height: 18px; background: var(--ink); }
+  .tech:nth-of-type(3n+1) h3 i { background: var(--red); } .tech:nth-of-type(3n+2) h3 i { background: var(--blue); } .tech:nth-of-type(3n) h3 i { background: var(--yellow); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .tech .src { font-weight: 700; }
+  .stack { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 24px; }
+  .stack .lbl { font-weight: 800; font-size: 15px; margin-right: 6px; }
+  .stack .tag { background: var(--white); font-size: 15px; }
+  .stack .tag small { font-weight: 600; color: var(--muted); margin-left: 4px; }
+
   .tbl { grid-column: 1 / -1; overflow-x: auto; }
   .card .num.sm { font-size: 44px; white-space: nowrap; }
   .note { grid-column: 1 / -1; font-size: 15px; color: var(--muted); margin-top: 16px; }
@@ -88,8 +110,12 @@
     .span4, .span3, .span6 { grid-column: 1 / -1; }
     .say { grid-template-columns: 64px 1fr; }
     .cta-block { grid-template-columns: 1fr; padding: 32px; }
+    .flow { grid-template-columns: 1fr; }
+    .flow li + li { border-left: 0; border-top: var(--line) solid var(--ink); }
+    .flow li + li::before { left: 28px; top: -16px; border: 12px solid transparent; border-top: 14px solid var(--ink); }
+    .flow li { padding: 20px; }
   }
-  @media (min-width: 901px) and (max-width: 1100px) { .span3 { grid-column: span 6; } }
+  @media (min-width: 901px) and (max-width: 1100px) { .span3 { grid-column: span 6; } .flow li { padding: 20px 14px; } .flow b { font-size: 17px; } }
 </style>
 <script>/* 움직임 준비: 움직임 줄이기 설정이 아니면 처음 상태를 숨겨 둔다. motion.js가 3초 안에 못 뜨면 그냥 보여 준다 */
 if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.documentElement.classList.add('motion'); setTimeout(function () { if (!window.__motionReady) document.documentElement.classList.remove('motion'); }, 3000); }</script>
@@ -99,7 +125,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="./"><span class="marks"><i class="c"></i><i class="s"></i><i class="t"></i></span>내 방식 QR</a>
-    <nav aria-label="페이지 안 이동"><a href="#problem">왜 필요한가</a><a href="#how">어떻게 쓰나</a><a href="#convert">AI 화면 변환</a><a href="#plain">쉬운 말</a><a href="#result">성과</a><a href="#faq">자주 묻는 질문</a></nav>
+    <nav aria-label="페이지 안 이동"><a href="#problem">왜 필요한가</a><a href="#how">어떻게 쓰나</a><a href="#convert">AI 화면 변환</a><a href="#plain">쉬운 말</a><a href="#tech">기술</a><a href="#result">성과</a><a href="#faq">자주 묻는 질문</a></nav>
     <a class="btn y sm" href="demo.html">직접 해보기</a>
   </div>
 </header>
@@ -191,6 +217,27 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
       <div class="card span3" data-a><h3>권유·광고 거절</h3><p>세트 변경, 앱 설치 광고 같은 창은 "안 사도 돼요"라고 알려 줘요.</p></div>
       <div class="card span3" data-a><h3>막히면 직원 도움</h3><p>3번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있어요.</p></div>
       <div class="card span3" data-a><h3>개인정보 없음</h3><p>내 방식 QR에는 빠르기·글씨 같은 설정만. 이름·연락처·장애 여부는 받지 않아요.</p></div>
+    </div>
+  </section>
+
+  <section id="tech">
+    <div class="wrap grid" data-a-group>
+      <div class="sec-head" data-a><p class="eyebrow b">우리 기술</p><h2>AI는 보고, 규칙이 말해요.</h2><p class="lead">AI에게 전부 맡기지 않았어요. 화면을 읽고 다시 그리는 일은 AI가, 틀리면 안 되는 일(어디를 누를지, 돈을 낼지)은 코드 규칙이 맡아요. 그래서 빠르고, 같은 화면에는 늘 같은 안내가 나와요.</p></div>
+      <ol class="flow" data-a>
+        <li><span class="k">1</span><b>사진 한 장</b><span>폰 카메라로 키오스크를 찍어요. 너무 어두우면 AI에 보내기 전에 다시 찍자고 말해요.</span></li>
+        <li class="ai"><span class="k">2</span><b>AI가 화면 읽기</b><span>비전 AI가 버튼 글자·자리·화면 종류를 표로 정리해요.</span></li>
+        <li class="rule"><span class="k">3</span><b>규칙이 할 일 고르기</b><span>내 목표에 맞는 버튼 하나. 결제·권유·막힘은 규칙으로 먼저 걸러요.</span></li>
+        <li class="rule"><span class="k">4</span><b>쉬운 말 검사</b><span>길이·어려운 말·할 일 개수를 세고, 넘으면 다시 써요.</span></li>
+        <li><span class="k">5</span><b>이어폰으로 듣기</b><span>미리 녹음한 자연스러운 목소리로, 내 빠르기에 맞춰 들려줘요.</span></li>
+      </ol>
+      <p class="flow-key" data-a><span><i class="ai"></i>AI가 하는 일</span><span><i class="rule"></i>규칙(코드)이 하는 일</span></p>
+      <article class="card tech span4" data-a><h3><i></i>위치·색은 계산해요</h3><p>"오른쪽 위, 노란 네모"는 AI가 지어낸 말이 아니에요. 버튼 자리를 9칸으로 나누고 픽셀 색을 재서 코드가 만들어요.</p></article>
+      <article class="card tech span4" data-a><h3><i></i>AI 화면 변환 + 검사기</h3><p>AI가 새 화면을 설계하면 검사기가 원래 버튼이 다 있는지, 없는 버튼을 만들지 않았는지 확인해요. 문제가 있으면 규칙 변환으로 바꿔요.</p></article>
+      <article class="card tech span4" data-a><h3><i></i>한 번 본 화면은 바로</h3><p>변환한 화면은 저장해 두고 다시 써요. AI 답이 늦어도 규칙 변환을 먼저 띄워서 기다리지 않아요.</p></article>
+      <article class="card tech span4" data-a><h3><i></i>폰과 서버가 같은 두뇌</h3><p>안내를 정하는 코드 하나를 폰(브라우저)과 서버가 같이 써요. 그래서 시연 페이지는 서버 없이도 돌아가고, 어디서든 결과가 같아요.</p></article>
+      <article class="card tech span4" data-a><h3><i></i>설치 없이, 가볍게</h3><p>앱 설치 없이 인터넷 주소로 열리는 웹앱이에요. 서버가 쓰는 외부 라이브러리는 1개뿐이고, 폰 4가지 크기 × 글씨 2단계에서 한 화면에 다 들어가는지 자동으로 확인했어요.</p></article>
+      <article class="card tech span4" data-a><h3><i></i>스스로 채점하는 시험장</h3><p>목업 키오스크 69화면을 자동으로 찍고, 비스듬히·흐리게·어둡게 바꿔 시험 사진 276장을 만들어요. 정답은 키오스크 코드가 알고 있어서 사람이 표시할 필요가 없어요.</p></article>
+      <div class="stack" data-a><span class="lbl">쓴 기술</span><span class="tag">Qwen3.8-27B<small>화면 읽기</small></span><span class="tag">DeepSeek-V4.1-Flash<small>목표 이해·화면 변환</small></span><span class="tag">Qwen3-TTS<small>목소리</small></span><span class="tag">Air API<small>모델 호출</small></span><span class="tag">Node.js<small>서버</small></span><span class="tag">웹앱(PWA)<small>폰</small></span><span class="tag">jsQR<small>QR 인식</small></span></div>
     </div>
   </section>
 
