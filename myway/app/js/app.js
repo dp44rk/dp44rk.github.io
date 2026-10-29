@@ -24,6 +24,7 @@ const app = {
 };
 window.__app = app;
 window.__go = (n) => go(n); // 시험용
+V.onSpeak((t) => (window.__said ||= new Set()).add(t)); // 미리 녹음할 문장 모으기용
 
 // ---------- 화면 전환 ----------
 function go(name) {

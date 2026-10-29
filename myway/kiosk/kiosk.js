@@ -246,7 +246,8 @@ async function payNow() {
   st.screen = 'paying'; render();
   if (!chan) try { await fetch(`${API}/api/kiosk/${KIOSK_ID}/pay`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ total: total(), items: st.cart }) }); } catch {}
   await new Promise((r) => setTimeout(r, 900));
-  st.orderNo = 100 + Math.floor(Math.random() * 900);
+  // 주문 번호는 101부터 차례로 (시연 음성을 미리 녹음해 둔 범위 101~130 안에서 돎)
+  orderSeq = (orderSeq % 30) + 1; st.orderNo = 100 + orderSeq;
   st.screen = 'done'; render();
   setTimeout(() => { if (st.screen === 'done') { resetOrder(); if (st.myway?.endOnDone !== false) st.myway = null; render(); } }, 25000);
 }
@@ -268,7 +269,7 @@ function screenType() {
   if (st.modal) return { option: 'option', upsell: 'upsell', ad: 'ad', staff: 'other' }[st.modal.type];
   return { start: 'start', dine: 'dine', menu: 'menu', cart: 'cart', point: 'point', pay_method: 'pay_method', pay_card: 'pay_card', paying: 'pay_card', done: 'done' }[st.screen];
 }
-let pubTimer = null, lastPub = '';
+let pubTimer = null, lastPub = '', orderSeq = Math.floor(Math.random() * 30);
 // 화면 구조 모으기: 보이는 [data-k] 버튼 → id·글자·종류·상자(0~1000)·묶음 제목
 function collect(scope, { keepRefs = false } = {}) {
   const r = root.getBoundingClientRect();
