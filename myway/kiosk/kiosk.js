@@ -11,7 +11,7 @@ const storeKey = document.documentElement.dataset.store || qs.get('store') || 'c
 const S = STORES[storeKey];
 const KIOSK_ID = qs.get('id') || S.id;
 const API = (qs.get('api') || '').replace(/\/$/, '');
-const APP_URL = new URL(qs.get('app') || '../', location.href).href;
+const APP_URL = new URL(qs.get('app') || '../app/', location.href).href;
 // hub=local: 서버 없이 같은 브라우저 안에서 폰 앱과 연결 (GitHub Pages 시연)
 const LOCAL = qs.get('hub') === 'local';
 const chan = LOCAL && 'BroadcastChannel' in window ? new BroadcastChannel('myway-hub') : null;

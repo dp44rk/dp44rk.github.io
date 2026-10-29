@@ -343,14 +343,12 @@ const ENTER = { setup: enterSetup, qr: enterQr, goal: enterGoal, guide: enterGui
 // ---------- 시작 ----------
 async function boot() {
   applyProfile();
-  // PC로 처음 들어오면 시연 페이지로 (폰·키오스크 QR·체험 모드는 그대로)
-  if (window.innerWidth >= 900 && !qs.has('demo') && !qs.has('k') && !qs.has('app') && !location.hash) { location.replace('demo.html'); return; }
   const h = qs.get('demo') === '1' ? null : await api.health();
   const srv = $('#srv');
   if (!h) {
     const d = await import('./demo.js').catch((e) => { console.warn(e); return null; });
     if (d) { app.demo = d.provider(app); app.demo.on(); }
-    srv.innerHTML = '체험 모드예요. 같은 화면의 목업 키오스크와 연결돼요. 실제 카메라 안내는 AI 서버를 켜야 해요. <a href="demo.html">시연 페이지</a>';
+    srv.innerHTML = '체험 모드예요. 같은 화면의 목업 키오스크와 연결돼요. 실제 카메라 안내는 AI 서버를 켜야 해요. <a href="../demo.html">시연 페이지</a>';
   } else {
     srv.textContent = h.mock ? '서버 연결됨 · AI 키 없음 (연동 키오스크만 안내)' : `서버 연결됨 · ${h.vision}`;
   }

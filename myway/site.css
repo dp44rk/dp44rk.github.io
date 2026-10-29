@@ -1,0 +1,69 @@
+/* 소개·시연 페이지 공통 — 바우하우스/데 스테일
+   격자: 최대 1200px, 12칸, 칸 사이 24px. 모든 덩어리는 이 격자의 칸 경계에 맞춘다.
+   세로 리듬: 8px 단위 (섹션 간격 128, 제목-본문 24, 카드 안 24). */
+:root {
+  --paper: #f4f0e6; --ink: #111; --red: #d7372a; --blue: #1d4fa0; --yellow: #f5c518; --white: #fff; --muted: #4a4a4a;
+  --line: 4px; --max: 1200px; --gut: 24px; --pad: 24px;
+  --h1: clamp(40px, 6vw, 76px); --h2: clamp(30px, 3.6vw, 44px); --h3: 22px; --body: 18px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: 'SUIT', 'Apple SD Gothic Neo', system-ui, sans-serif; font-size: var(--body); line-height: 1.6; -webkit-text-size-adjust: 100%; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+h1, h2, h3, p { margin: 0; word-break: keep-all; }
+.wrap { width: 100%; max-width: calc(var(--max) + var(--pad) * 2); margin: 0 auto; padding: 0 var(--pad); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gut); }
+
+/* 표지 */
+.marks { display: inline-flex; gap: 6px; vertical-align: middle; }
+.marks i { width: 28px; height: 28px; display: block; }
+.marks .c { border-radius: 50%; background: var(--red); } .marks .s { background: var(--blue); } .marks .t { background: var(--yellow); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+
+/* 머리 */
+.nav { position: sticky; top: 0; z-index: 20; background: var(--paper); border-bottom: var(--line) solid var(--ink); }
+.nav .wrap { height: 72px; display: flex; align-items: center; gap: 32px; }
+.nav .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 22px; text-decoration: none; white-space: nowrap; }
+.nav nav { display: flex; gap: 24px; margin-left: auto; font-weight: 700; font-size: 16px; }
+.nav nav a { text-decoration: none; }
+.nav nav a:hover { text-decoration: underline; text-underline-offset: 6px; }
+
+/* 버튼 */
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 0 24px; border: var(--line) solid var(--ink); font-weight: 900; font-size: 18px; text-decoration: none; background: var(--white); box-shadow: 6px 6px 0 var(--ink); transition: transform .06s, box-shadow .06s; white-space: nowrap; }
+.btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--ink); }
+.btn.y { background: var(--yellow); } .btn.b { background: var(--blue); color: #fff; } .btn.sm { height: 44px; padding: 0 16px; font-size: 16px; box-shadow: 4px 4px 0 var(--ink); }
+
+/* 섹션 */
+section { padding: 128px 0 0; }
+section:last-of-type { padding-bottom: 128px; }
+.eyebrow { font-weight: 800; font-size: 15px; letter-spacing: .08em; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.eyebrow::before { content: ''; width: 16px; height: 16px; background: var(--red); }
+.eyebrow.b::before { background: var(--blue); } .eyebrow.y::before { background: var(--yellow); }
+h2 { font-size: var(--h2); line-height: 1.2; font-weight: 900; }
+.lead { font-size: 20px; color: var(--muted); margin-top: 24px; max-width: 760px; }
+.sec-head { grid-column: 1 / -1; margin-bottom: 48px; }
+
+/* 카드 */
+.card { background: var(--white); border: var(--line) solid var(--ink); padding: var(--pad); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card h3 { font-size: var(--h3); line-height: 1.35; font-weight: 900; }
+.card p { color: var(--muted); font-size: 17px; }
+.card .num { font-size: 56px; line-height: 1; font-weight: 900; letter-spacing: -.02em; }
+.card .src { margin-top: auto; padding-top: 12px; font-size: 13px; color: var(--muted); border-top: 2px solid var(--ink); }
+.card.y { background: var(--yellow); } .card.b { background: var(--blue); color: #fff; } .card.b p, .card.b .src { color: #e6ebf6; } .card.b .src { border-color: #fff; }
+.tag { display: inline-block; align-self: flex-start; border: 3px solid var(--ink); padding: 2px 10px; font-weight: 800; font-size: 14px; background: var(--paper); color: var(--ink); }
+
+/* 표 */
+table { width: 100%; border-collapse: collapse; background: var(--white); font-size: 17px; }
+th, td { border: 3px solid var(--ink); padding: 14px 16px; text-align: left; vertical-align: top; word-break: keep-all; }
+th { background: var(--ink); color: #fff; font-weight: 800; }
+td:first-child { font-weight: 800; white-space: nowrap; }
+
+/* 바닥 */
+footer { border-top: var(--line) solid var(--ink); padding: 40px 0 56px; font-size: 15px; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; }
+
+@media (max-width: 900px) {
+  .nav nav { display: none; }
+  section { padding-top: 88px; }
+  :root { --gut: 16px; --pad: 16px; }
+}
