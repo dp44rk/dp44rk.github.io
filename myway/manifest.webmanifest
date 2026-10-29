@@ -1,0 +1,10 @@
+{
+  "name": "내 방식 QR — 키오스크 길잡이",
+  "short_name": "내 방식 QR",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f0e6",
+  "theme_color": "#f4f0e6",
+  "lang": "ko",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
