@@ -243,12 +243,12 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
 
   <section id="result">
     <div class="wrap grid" data-a-group>
-      <div class="sec-head" data-a><p class="eyebrow">성과 (2026.10.29 기준)</p><h2>목업 키오스크에서 끝까지 주문했어요.</h2><p class="lead">폰 앱이 말한 버튼을 그대로 누르는 자동 시험이에요. 사람은 끼어들지 않았어요.</p></div>
+      <div class="sec-head" data-a><p class="eyebrow">성과 (2026.10.30 기준)</p><h2>목업 키오스크에서 끝까지 주문했어요.</h2><p class="lead">폰 앱이 말한 버튼을 그대로 누르는 자동 시험이에요. 사람은 끼어들지 않았어요.</p></div>
       <div class="card span3" data-a><p class="num">5 / 5</p><h3>주문 완료</h3><p>카페 3개·식당 2개 목표, 다른 탭에 있는 메뉴까지</p></div>
-      <div class="card span3 y" data-a><p class="num" data-count="100%">100%</p><h3>화면 변환 성공 (규칙)</h3><p>69화면·389버튼, 빠짐·지어냄 0</p></div>
+      <div class="card span3 y" data-a><p class="num" data-count="100%">100%</p><h3>버튼 보존 (AI 화면 변환)</h3><p>69화면·389버튼, 빠짐·지어냄 0. 고침 없이 통과 73.9%, 나머지는 검증기가 쉬운 말로 고침</p></div>
       <div class="card span3" data-a><p class="num sm">29.2 → 0</p><h3>어려운 말 /100어절</h3><p>키오스크 원문 대비 안내 문장</p></div>
       <div class="card span3 b" data-a><p class="num sm">8.1 → 1</p><h3>한 번에 받는 정보</h3><p>화면당 선택지 평균 8.1개 → 안내당 할 일 1개 이하</p></div>
-      <p class="note" data-a>한계도 적어 둡니다. 규칙 변환·어려운 말 지표는 같은 사전으로 만들고 같은 사전으로 검사해서 높게 나와요. 카메라 모드(비전 모델) 정확도와 AI 화면 변환 성공률은 측정 중이고, 어르신 사용자 시험은 아직이에요. 자세한 내용은 <a href="https://github.com/dp44rk/camelon-mywaykiosk/blob/main/docs/EVAL.md">EVAL.md</a>.</p>
+      <p class="note" data-a>한계도 적어 둡니다. 규칙 변환·어려운 말 지표는 같은 사전으로 만들고 같은 사전으로 검사해서 높게 나와요. AI 화면 변환은 DeepSeek-V4.1-Flash로 쟀고(한 화면 2.7초), 18화면은 라벨에 어려운 말이 남아 검증기가 고쳤어요. 카메라 모드(비전 모델) 정확도는 아직 못 쟀어요. 모델 서버가 그림이 든 요청을 거부하는 문제를 풀고 있어요. 어르신 사용자 시험도 아직이에요. 자세한 내용은 <a href="https://github.com/dp44rk/camelon-mywaykiosk/blob/main/docs/EVAL.md">EVAL.md</a>.</p>
     </div>
   </section>
 
@@ -257,7 +257,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { document.document
       <div class="sec-head" data-a><p class="eyebrow b">자주 묻는 질문</p><h2>궁금한 점을 모았어요.</h2></div>
       <div class="faq" data-a-group>
       <details class="faq-item" data-a><summary>앱을 따로 설치해야 하나요?</summary><p>아니요. 주소나 QR로 바로 열리는 웹 앱이에요. 자주 쓰신다면 폰 홈 화면에 추가해 앱처럼 쓸 수 있어요.</p></details>
-      <details class="faq-item" data-a><summary>아무 키오스크에서나 되나요?</summary><p>카메라 모드는 화면이 보이는 키오스크라면 쓸 수 있어요. 다만 사진으로 화면을 읽는 정확도는 지금 측정 중이에요. 「내 방식 QR」 배지가 있는 연동 키오스크는 키오스크가 화면 구조를 직접 알려 주기 때문에 더 정확하고, 화면도 내 방식으로 바뀌어요.</p></details>
+      <details class="faq-item" data-a><summary>아무 키오스크에서나 되나요?</summary><p>카메라 모드는 화면이 보이는 키오스크라면 쓸 수 있어요. 다만 사진으로 화면을 읽는 정확도는 아직 재지 못했어요. 「내 방식 QR」 배지가 있는 연동 키오스크는 키오스크가 화면 구조를 직접 알려 주기 때문에 더 정확하고, 화면도 내 방식으로 바뀌어요.</p></details>
       <details class="faq-item" data-a><summary>키오스크 업체는 무엇을 해야 하나요?</summary><p>카메라 모드는 아무것도 하지 않아도 돼요. 연동 모드는 화면의 버튼 정보를 보내는 작은 코드와 화면 구석의 QR 배지만 넣으면 돼요. 결제·주문 시스템은 그대로 둬요.</p></details>
       <details class="faq-item" data-a><summary>결제를 AI가 대신하나요?</summary><p>아니요. 버튼을 누르고 카드를 꽂는 건 사용자예요. 결제 화면에서는 금액을 읽어 드리고, "네"라고 확인하기 전에는 결제 버튼을 안내하지 않아요.</p></details>
       <details class="faq-item" data-a><summary>안내가 틀리면 어떻게 되나요?</summary><p>"다시 찍어 주세요"라고 하거나, 같은 화면에서 세 번 막히면 주문 내용을 큰 글씨로 띄워 직원에게 보여 줄 수 있게 해요. 위치와 색은 AI가 아니라 규칙 코드로 계산해서 지어내지 않아요.</p></details>
